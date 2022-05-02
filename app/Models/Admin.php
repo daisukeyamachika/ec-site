@@ -10,6 +10,9 @@ class Admin extends Authenticatable
 {
     use HasFactory;
 
+    // 参照させたいSQLのテーブル名を指定してあげる
+    protected $table = 'admin';
+
     /**
      * The attributes that are mass assignable.
      *
