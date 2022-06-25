@@ -14,7 +14,7 @@
           </h2>
           <button type="button" class="modal__close" aria-label="Close modal" data-micromodal-close></button>
         </header>
-        <main class="modal__content" id="{{ $modal }}-content">
+        <main class="modal__content" id="{{ $modal }}-content">Create
             <div class="flex flex-wrap">
                 @foreach ($images as $image)
                     <div class="w-1/4 p-2 md:p-4">
