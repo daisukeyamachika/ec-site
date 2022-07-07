@@ -15,7 +15,6 @@ class ProductSeeder extends Seeder
      */
     public function run()
     {
-        //
         DB::table('products')->insert([
             [
                 'shop_id' => 1,
@@ -40,7 +39,7 @@ class ProductSeeder extends Seeder
             [
                 'shop_id' => 1,
                 'secondary_category_id' => 5,
-                'image1' => 1,
+                'image1' => 4,
             ],
         ]);
     }
