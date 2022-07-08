@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use Throwable;
 use Illuminate\Support\Facades\Log;
 use App\Http\Requests\ProductRequest;
+use App\Constants\Common;
 
 class ProductController extends Controller
 {
@@ -186,13 +187,13 @@ class ProductController extends Controller
                     $product->image2 = $request->image2;
                     $product->image3 = $request->image3;
                     $product->is_selling = $request->is_selling;
-                    
+
                     $product->save();
 
-                    if($request->type === '1') {
+                    if($request->type === Common::PRODUCT_LIST['add']) {
                         $newQuantity = $request->quantity;
                     }
-                    if($request->type === '2') {
+                    if($request->type === Common::PRODUCT_LIST['reduce']) {
                         $newQuantity = $request->quantity * -1;
                     }
 
