@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Constants\Common;
 use App\Http\Controllers\Controller;
+use App\Models\Cart;
+use App\Models\Stock;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Cart;
-use App\Models\User;
 
 class CartController extends Controller
 {
@@ -62,16 +64,32 @@ class CartController extends Controller
 
         $lineItems = [];
         foreach($products as $product) {
-            $lineItem = [
-                'name' => $product->name,
-                'description' => $product->information,
-                'amount' => $product->price,
-                'currency' => 'jpy',
-                'qunantity' => $product->pivot->quantity,
-            ];
-            array_push($lineItems, $lineItem);
+            $quantity = '';
+            $quantity = Stock::where('product_id', $product->id)->sum('quantity');
+
+            if($product->pivot->quantity > $quantity) {
+                return redirect()->route('user.cart.index');
+            } else {
+                $lineItem = [
+                    'name' => $product->name,
+                    'description' => $product->information,
+                    'amount' => $product->price,
+                    'currency' => 'jpy',
+                    'quantity' => $product->pivot->quantity,
+                ];
+                array_push($lineItems, $lineItem);
+            }
         }
         // dd($lineItems);
+        foreach($products as $product) {
+            Stock::create([
+                'product_id' => $product->id,
+                'type' => Common::PRODUCT_LIST['reduce'],
+                'quantity' => $product->pivot->quantity * -1,
+            ]);
+        }
+
+        dd('test');
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
@@ -86,6 +104,6 @@ class CartController extends Controller
         $publicKey = env('STRIPE_PUBLIC_KEY');
 
         return view('user.checkout',
-            compact('session', 'publickKey'));
+            compact('session', 'publicKey'));
     }
 }
