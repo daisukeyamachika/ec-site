@@ -80,7 +80,9 @@ class CartController extends Controller
                 array_push($lineItems, $lineItem);
             }
         }
+        
         // dd($lineItems);
+
         foreach($products as $product) {
             Stock::create([
                 'product_id' => $product->id,
@@ -89,7 +91,7 @@ class CartController extends Controller
             ]);
         }
 
-        dd('test');
+        // dd('test');
 
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
